@@ -2,6 +2,7 @@
 
 import { URL } from "@/utils/config";
 import { useRouter } from "next/navigation";
+import React from "react";
 import { toast } from "sonner";
 
 export function DeleteButton({
@@ -31,3 +32,22 @@ export function DeleteButton({
   return <button onClick={handleDelete}>{children}</button>;
 }
 
+export function EditButton({
+  children,
+  id,
+}: {
+  children: React.ReactNode;
+  id: string;
+}) {
+  const router = useRouter();
+
+  const handleEdit = async () => {
+    router.push(`/notes/edit/${id}`);
+  };
+
+  return (
+    <button onClick={handleEdit} type="submit">
+      {children}
+    </button>
+  );
+}

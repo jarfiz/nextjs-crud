@@ -1,4 +1,4 @@
-import { DeleteButton } from "@/components/button/button";
+import { DeleteButton, EditButton } from "@/components/button/button";
 import { SquarePen, Trash } from "lucide-react";
 
 export default function ButtonCard({ id }: { id: string }) {
@@ -8,7 +8,9 @@ export default function ButtonCard({ id }: { id: string }) {
         <Trash className="size-5 cursor-pointer hover:text-red-500 duration-200 hover:-translate-y-0.5 hover:scale-110" />
       </DeleteButton>
       <span className="text-2xl text-gray-400 select-none">|</span>
-      <SquarePen className="size-5 cursor-pointer hover:text-green-500 duration-200 hover:-translate-y-0.5 hover:scale-110" />
+      <EditButton id={id}>
+        <SquarePen className="size-5 cursor-pointer hover:text-green-500 duration-200 hover:-translate-y-0.5 hover:scale-110" />
+      </EditButton>
     </div>
   );
 }
