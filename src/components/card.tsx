@@ -13,22 +13,23 @@ export default function Card({}) {
   const [notes, SetNotes] = useState([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
+  const getNote = async () => {
+    try {
+      setIsLoading(true);
+      const res = await fetch(`${URL}/notes`, {
+        cache: "reload",
+      });
+      const data = await res.json();
+      SetNotes(data);
+    } catch (error) {
+      toast.error("Unable to load notes. Please try again.");
+      console.log(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const getNote = async () => {
-      try {
-        setIsLoading(true);
-        const res = await fetch(`${URL}/notes`, {
-          cache: "reload",
-        });
-        const data = await res.json();
-        SetNotes(data);
-      } catch (error) {
-        toast.error("Unable to load notes. Please try again.");
-        console.log(error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
     getNote();
   }, []);
 
@@ -61,7 +62,7 @@ export default function Card({}) {
             </p>
           </div>
           <div onClick={handleClick}>
-            <ButtonCard id={note.id} />
+            <ButtonCard id={note.id} onDelete={getNote} />
           </div>
         </Link>
       ))}

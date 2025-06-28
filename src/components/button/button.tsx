@@ -2,29 +2,39 @@
 
 import { URL } from "@/utils/config";
 import { useRouter } from "next/navigation";
-import React from "react";
 import { toast } from "sonner";
 
 export function DeleteButton({
   children,
   id,
+  onDelete,
 }: {
   children: React.ReactNode;
   id: string;
+  onDelete?: () => Promise<void>;
 }) {
   const router = useRouter();
 
   const handleDelete = async () => {
     try {
-      await fetch(`${URL}/notes/${id}`, {
-        method: "DELETE",
-        cache: "no-cache",
-      });
+      const confirmed = confirm(
+        "Are you sure you want to delete this note? This action cannot be undone."
+      );
 
-      toast.success("Note deleted successfully");
-      router.push("/");
+      if (confirmed) {
+        await fetch(`${URL}/notes/${id}`, {
+          method: "DELETE",
+        });
+        toast.success("Note deleted successfully");
+
+        if (onDelete) {
+          await onDelete();
+        } else {
+          router.prefetch("/");
+        }
+      }
     } catch (error) {
-      toast.success("Failed to delete note");
+      toast.error("Failed to delete note");
       console.log(error);
     }
   };
