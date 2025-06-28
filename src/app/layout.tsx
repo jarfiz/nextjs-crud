@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Roboto } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "sonner";
+import Navbar from "@/components/navbar";
 const roboto = Roboto({
   subsets: ["latin"],
 });
@@ -19,6 +20,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${roboto.className} antialiased`}>
+        <Navbar />
         {children}
         <Toaster position="top-center" />
       </body>
