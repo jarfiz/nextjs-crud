@@ -3,11 +3,11 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { toast } from "sonner";
-import { SquarePen, Trash } from "lucide-react";
 
 import Note from "@/types/Note";
 import { URL } from "@/utils/config";
 import dateFormat from "@/utils/dateFormat";
+import ButtonCard from "@/components/button/button-card";
 
 export default function Card({}) {
   const [notes, SetNotes] = useState([]);
@@ -17,7 +17,9 @@ export default function Card({}) {
     const getNote = async () => {
       try {
         setIsLoading(true);
-        const res = await fetch(`${URL}/notes`, { cache: "force-cache" });
+        const res = await fetch(`${URL}/notes`, {
+          cache: "reload",
+        });
         const data = await res.json();
         SetNotes(data);
       } catch (error) {
@@ -58,13 +60,8 @@ export default function Card({}) {
               {note.content}
             </p>
           </div>
-          <div
-            className="flex items-center absolute right-3 bottom-1 space-x-1"
-            onClick={handleClick}
-          >
-            <Trash className="size-5 cursor-pointer hover:text-red-500 duration-200 hover:-translate-y-0.5 hover:scale-110" />
-            <span className="text-2xl text-gray-400 select-none">|</span>
-            <SquarePen className="size-5 cursor-pointer hover:text-green-500 duration-200 hover:-translate-y-0.5 hover:scale-110" />
+          <div onClick={handleClick}>
+            <ButtonCard id={note.id} />
           </div>
         </Link>
       ))}
